@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok DNS Blocklist</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #212529;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #6c757d;
+            margin-bottom: 30px;
+        }
+        #dns-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f8f9fa;
+        }
+        #dns-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #e9ecef;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #dns-list li:last-child {
+            border-bottom: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s ease-in-out;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:active {
+            background-color: #004085;
+        }
+        .copy-feedback {
+            display: inline-block;
+            margin-left: 10px;
+            color: green;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .copy-feedback.show {
+            opacity: 1;
+        }
+         footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TikTok DNS Blocklist</h1>
+        <p>A curated list of TikTok domains for blocking via DNS filtering services.</p>
+
+        <ul id="dns-list">
+            <li>Loading domains...</li>
+        </ul>
+
+        <button id="copy-button">Copy All Domains</button>
+        <span id="copy-feedback" class="copy-feedback">Copied!</span>
+
+        <footer>
+            Generated on: <span id="generation-date"></span>
+        </footer>
+    </div>
+
+    <script>
+        const dnsListElement = document.getElementById('dns-list');
+        const copyButton = document.getElementById('copy-button');
+        const copyFeedback = document.getElementById('copy-feedback');
+        const generationDateElement = document.getElementById('generation-date');
+        let domains = []; // To store the fetched domains
+
+        // Set generation date
+        generationDateElement.textContent = new Date().toLocaleDateString();
+
+        // Fetch the DNS list
+        fetch('tiktok_dns_list.txt')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(text => {
+                domains = text.split('\n')
+                              .map(line => line.trim())
+                              .filter(line => line && !line.startsWith('#')); // Filter out empty lines and comments
+
+                dnsListElement.innerHTML = ''; // Clear loading message
+
+                if (domains.length > 0) {
+                    domains.forEach(domain => {
+                        const li = document.createElement('li');
+                        li.textContent = domain;
+                        dnsListElement.appendChild(li);
+                    });
+                } else {
+                    dnsListElement.innerHTML = '<li>No domains found in the list.</li>';
+                    copyButton.disabled = true; // Disable copy if list is empty
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching or parsing DNS list:', error);
+                dnsListElement.innerHTML = '<li>Error loading domain list. Please check the console.</li>';
+                copyButton.disabled = true; // Disable copy on error
+            });
+
+        // Copy button functionality
+        copyButton.addEventListener('click', () => {
+            if (domains.length > 0) {
+                const textToCopy = domains.join('\n');
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        // Show feedback
+                        copyFeedback.classList.add('show');
+                        setTimeout(() => {
+                            copyFeedback.classList.remove('show');
+                        }, 1500); // Hide after 1.5 seconds
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy domains: ', err);
+                        alert('Failed to copy domains. Please try again or copy manually.');
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

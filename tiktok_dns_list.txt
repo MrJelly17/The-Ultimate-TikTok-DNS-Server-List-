@@ -1,0 +1,1 @@
+# Add TikTok DNS server domains here, one per line.
