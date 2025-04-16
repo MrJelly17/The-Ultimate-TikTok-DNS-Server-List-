@@ -93,8 +93,12 @@
         <h1>TikTok DNS Blocklist</h1>
         <p>A curated list of TikTok domains for blocking via DNS filtering services.</p>
 
-        <ul id="dns-list">
-            <li>Loading domains...</li>
+        <ul id="main-domains" class="dns-category">
+            <li>Loading main domains...</li>
+        </ul>
+        <h2>All Domains</h2>
+        <ul id="all-domains" class="dns-category">
+            <li>Loading all domains...</li>
         </ul>
 
         <button id="copy-button">Copy All Domains</button>
@@ -106,11 +110,13 @@
     </div>
 
     <script>
-        const dnsListElement = document.getElementById('dns-list');
+        const mainDomainsElement = document.getElementById('main-domains');
+        const allDomainsElement = document.getElementById('all-domains');
         const copyButton = document.getElementById('copy-button');
         const copyFeedback = document.getElementById('copy-feedback');
         const generationDateElement = document.getElementById('generation-date');
-        let domains = []; // To store the fetched domains
+        let mainDomains = [];
+        let allDomains = [];
 
         // Set generation date
         generationDateElement.textContent = new Date().toLocaleDateString();
@@ -124,46 +130,71 @@
                 return response.text();
             })
             .then(text => {
-                domains = text.split('\n')
-                              .map(line => line.trim())
-                              .filter(line => line && !line.startsWith('#')); // Filter out empty lines and comments
+                const lines = text.split('\n').map(line => line.trim());
+                let isMainSection = false;
 
-                dnsListElement.innerHTML = ''; // Clear loading message
+                lines.forEach(line => {
+                    if (line.startsWith('# Main Domains')) {
+                        isMainSection = true;
+                    } else if (line.startsWith('# All Domains')) {
+                        isMainSection = false;
+                    } else if (line && !line.startsWith('#')) {
+                        if (isMainSection) {
+                            mainDomains.push(line);
+                        } else {
+                            allDomains.push(line);
+                        }
+                    }
+                });
 
-                if (domains.length > 0) {
-                    domains.forEach(domain => {
+                // Populate main domains
+                mainDomainsElement.innerHTML = '';
+                if (mainDomains.length > 0) {
+                    mainDomains.forEach(domain => {
                         const li = document.createElement('li');
                         li.textContent = domain;
-                        dnsListElement.appendChild(li);
+                        mainDomainsElement.appendChild(li);
                     });
                 } else {
-                    dnsListElement.innerHTML = '<li>No domains found in the list.</li>';
-                    copyButton.disabled = true; // Disable copy if list is empty
+                    mainDomainsElement.innerHTML = '<li>No main domains found.</li>';
                 }
+
+                // Populate all domains
+                allDomainsElement.innerHTML = '';
+                if (allDomains.length > 0) {
+                    allDomains.forEach(domain => {
+                        const li = document.createElement('li');
+                        li.textContent = domain;
+                        allDomainsElement.appendChild(li);
+                    });
+                } else {
+                    allDomainsElement.innerHTML = '<li>No all domains found.</li>';
+                }
+
+                // Enable copy button if domains exist
+                copyButton.disabled = mainDomains.length === 0 && allDomains.length === 0;
             })
             .catch(error => {
                 console.error('Error fetching or parsing DNS list:', error);
-                dnsListElement.innerHTML = '<li>Error loading domain list. Please check the console.</li>';
-                copyButton.disabled = true; // Disable copy on error
+                mainDomainsElement.innerHTML = '<li>Error loading main domains.</li>';
+                allDomainsElement.innerHTML = '<li>Error loading all domains.</li>';
+                copyButton.disabled = true;
             });
 
         // Copy button functionality
         copyButton.addEventListener('click', () => {
-            if (domains.length > 0) {
-                const textToCopy = domains.join('\n');
-                navigator.clipboard.writeText(textToCopy)
-                    .then(() => {
-                        // Show feedback
-                        copyFeedback.classList.add('show');
-                        setTimeout(() => {
-                            copyFeedback.classList.remove('show');
-                        }, 1500); // Hide after 1.5 seconds
-                    })
-                    .catch(err => {
-                        console.error('Failed to copy domains: ', err);
-                        alert('Failed to copy domains. Please try again or copy manually.');
-                    });
-            }
+            const textToCopy = [...mainDomains, ...allDomains].join('\n');
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => {
+                    copyFeedback.classList.add('show');
+                    setTimeout(() => {
+                        copyFeedback.classList.remove('show');
+                    }, 1500);
+                })
+                .catch(err => {
+                    console.error('Failed to copy domains: ', err);
+                    alert('Failed to copy domains. Please try again or copy manually.');
+                });
         });
     </script>
 </body>
