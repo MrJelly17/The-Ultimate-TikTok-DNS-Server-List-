@@ -86,6 +86,26 @@
             font-size: 12px;
             color: #6c757d;
         }
+        #main-domains, #all-domains {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f8f9fa;
+        }
+        #main-domains li, #all-domains li {
+            padding: 5px 0;
+            border-bottom: 1px solid #e9ecef;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #main-domains li:last-child, #all-domains li:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
@@ -139,10 +159,11 @@
                     } else if (line.startsWith('# All Domains')) {
                         isMainSection = false;
                     } else if (line && !line.startsWith('#')) {
+                        const domain = line.startsWith('*.') ? line.slice(2) : line; // Remove leading "*."
                         if (isMainSection) {
-                            mainDomains.push(line);
+                            mainDomains.push(domain);
                         } else {
-                            allDomains.push(line);
+                            allDomains.push(domain);
                         }
                     }
                 });
@@ -195,7 +216,6 @@
                     console.error('Failed to copy domains: ', err);
                     alert('Failed to copy domains. Please try again or copy manually.');
                 });
-        });
     </script>
 </body>
 </html>
