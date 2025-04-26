@@ -34,8 +34,6 @@
 0pbxmo.xzcs3zlph.com
 0pbxmo.xzcs3zlph.com.edgesuite.net
 0rutzab.qfyf1toi.com
-1.courier-push-apple.com.akadns.net
-1.courier-sandbox-push-apple.com.akadns.net
 1006686430.rsc.cdn77.org
 1053058463.rsc.cdn77.org
 1059928774.rsc.cdn77.org
@@ -1374,6 +1372,7 @@ dsa06.snssdk.com
 dsa11.snssdk.com
 dsa13.snssdk.com
 dsp.toutiao.com
+dt.adsafeprotected.com
 dyece.bytedance.com
 dynamic-amemv.com.edgekey.net
 dynamic-comm.snssdk.com.bdgslb.com
@@ -1573,6 +1572,7 @@ frontier16-normal-no1a.tiktokv.eu.bbrouter
 ft.snssdk.com
 ft.snssdk.com.w.kunluncan.com
 fusioncdn-lf.snssdk.com
+fw.adsafeprotected.com
 fxj-boe.snssdk.com
 g.l.bytedns.net
 gababhhcehc.temp.p23.tc.cdntip.com
@@ -2839,6 +2839,7 @@ miniappservice.bytedance.com
 mint-sg.tiktok.com
 mlab.toutiao.com
 mmp.bytedance.com
+mobile.adsafeprotected.com
 mobile.e.l.bytedns.net
 mobile.g.l.bytedns.net
 mobile.ttgw.tuchong-normal-lb-lf.l.bytedns.net
@@ -3028,7 +3029,7 @@ mssdk73-normal-useast1a.tiktokv.com
 mssdk74-normal-useast1a.tiktokv.com
 mssdk75-normal-useast1a.tiktokv.com
 mssdk76-normal-useast1a.tiktokv.com
-ssdk77-normal-useast1a.tiktokv.com
+mssdk77-normal-useast1a.tiktokv.com
 mssdk78-normal-useast1a.tiktokv.com
 mssdk79-normal-useast1a.tiktokv.com
 mssdk8-normal-useast1a.tiktokv.com
@@ -3557,6 +3558,7 @@ p2.ipstatp.com.w.kunlunca.com
 p2.pstatp.com
 p2.pstatp.com.w.kunlungr.com
 p20-sign.tiktokcdn-us.com
+p21-ad-sg.ibyteimg.com
 p21-sign.tiktokcdn-us.com
 p21-webcast.hypstarcdn.com
 p21-webcast.muscdn.com
@@ -5493,6 +5495,7 @@ starling.tiktokv.eu
 starling.tiktokv.us
 starsp.toutiao.com
 static.ads-twitter.com
+static.adsafeprotected.com
 static.bytedance.com
 static.cloudflareinsights.com
 static.hsappstatic.net
@@ -6089,6 +6092,7 @@ tp-pay.snssdk.com.w.kunluncan.com
 tp-paymva.snssdk.com
 tp-paysg.snssdk.com
 tpaw-use1.muscdn.com
+tps-dn-ew1.doubleverify.com
 tps.doubleverify.com
 tpsc-ew1.doubleverify.com
 tpsc-video-eu.doubleverify.com
@@ -6159,6 +6163,7 @@ unauthorized.snssdk.com
 unavailable.tiktokv.com
 unicom.h.l.bytedns.net
 unicom.y.l.bytedns.net
+unified.adsafeprotected.com
 union.bytedance.com
 unknow.tiktokv.com
 unpkg.pstatp.com
